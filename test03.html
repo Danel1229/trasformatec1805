@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Pesquisa Ceo /Endereco</title>
+</head>
+<body>
+    <div style="border: solid 1px cadetblue; padding: 10px">
+        <h4>Pesquisa por CEP</h4>
+        <input type="text" id="cep" placeholder="CEP">
+        <input type="submit" value="Pesquisar CEP" id="btn_pesquisa" onclick="pesquisaCEP()">
+        <p id="endereco"></p>
+    </div>
+    <div style="border: solid 1px cadetblue; padding: 10px">
+        <h4>Pesquisa por Endereço</h4>
+        <input type="text" placeholder="Endereço" id="logradouro">
+        <input type="text" placeholder="Cidade" id="localidade">
+        <p id="endereco_2"></p>
+    </div>
+    <script>
+        const pesquisaEndereco = async () => {
+
+const logradouro = document.getElementById("logradouro").value
+const uf = document.getElementById("uf").value
+const localidade = document.getElementById("localidade").value
+
+console.log(logradouro," ",uf, " ", localidade)
+
+const viacep_url = `https://viacep.com.br/ws/${uf}/${localidade}/${logradouro}/json/`
+
+try {
+    const resultado = await fetch(viacep_url)
+    const resultado_json = await resultado.json()
+
+    return resultado_json
+
+} catch (erro) {
+            return erro.message
+        }
+
+    }
+    const displayEndereco = async () => {
+
+const enderecos = await pesquisaEndereco()
+
+document.getElementById("endereco").innerHTML = JSON.stringify(enderecos)
+
+}
+const displayCEP = async () => {
+
+const endereco = await pesquisaCEP()
+
+document.getElementById("endereco").innerHTML = JSON.stringify(endereco)
+}
+
+</script>  
+</body>
+</html>
